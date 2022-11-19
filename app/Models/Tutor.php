@@ -11,7 +11,7 @@ class Tutor extends Model
     protected $table = 'tutor';
     public $timestamps = false;
 
-    protected $guarded = ['id'];
+    protected $guarded = [];
 
     public function Usuario()
     {

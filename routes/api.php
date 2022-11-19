@@ -86,8 +86,10 @@ Route::get('/createUsers', function (Request $request) {
     $apoderado = new Apoderado([
         'id' => $user2->id,
         'activo' => 1,
+        'direccion' => 'direccion_apoderado'
     ]);
     $apoderado->save();
+
     $user3 = new Usuario([
         'primer_nombre' => 'tutor',
         'segundo_nombre' => 'tutor',
@@ -103,6 +105,7 @@ Route::get('/createUsers', function (Request $request) {
         'id' => $user3->id,
         'activo' => 1,
     ]);
+    $tutor->save();
 
     $user4 = new Usuario([
         'primer_nombre' => 'alumno',
@@ -118,6 +121,7 @@ Route::get('/createUsers', function (Request $request) {
     $estudiante = new Estudiante([
         'id' => $user4->id,
         'activo' => 1,
+        'direccion' => 'direccion_apoderado'
     ]);
     $estudiante->save();
 
