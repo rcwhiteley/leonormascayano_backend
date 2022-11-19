@@ -38,12 +38,24 @@ Route::middleware('auth:sanctum')->get('/logout', [AuthController::class, 'logou
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/resetUsers', function (Request $request) {
-    Administrador::truncate();
-    Administrativo::truncate();
-    Apoderado::truncate();
-    Estudiante::truncate();
-    Tutor::truncate();
-    Usuario::truncate();
+    Administrador::all()->each(function ($item, $key) {
+        $item->delete();
+    });
+    Administrativo::all()->each(function ($item, $key) {
+        $item->delete();
+    });
+    Estudiante::all()->each(function ($item, $key) {
+        $item->delete();
+    });
+    Apoderado::all()->each(function ($item, $key) {
+        $item->delete();
+    });
+    Tutor::all()->each(function ($item, $key) {
+        $item->delete();
+    });
+    Usuario::all()->each(function ($item, $key) {
+        $item->delete();
+    });
     $admin = new Usuario([
         'primer_nombre' => 'administrador',
         'segundo_nombre' => 'administrador',
