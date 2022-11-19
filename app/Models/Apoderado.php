@@ -10,6 +10,7 @@ class Apoderado extends Model
     // use HasFactory;
     protected $table = 'apoderado';
     public $timestamps = false;
+    protected $guarded = [];
 
     public function Usuario()
     {

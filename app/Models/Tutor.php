@@ -11,6 +11,8 @@ class Tutor extends Model
     protected $table = 'tutor';
     public $timestamps = false;
 
+    protected $guarded = ['id'];
+
     public function Usuario()
     {
         return $this->belongsTo(Usuario::class, 'id');

@@ -10,4 +10,5 @@ class Estudiante extends Model
     //use HasFactory;
     protected $table = 'alumno';
     public $timestamps = false;
+    protected $guarded = [];
 }
