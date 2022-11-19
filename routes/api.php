@@ -37,7 +37,13 @@ Route::middleware('auth:sanctum')->get('/logout', [AuthController::class, 'logou
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::get('/createUsers', function (Request $request) {
+Route::get('/resetUsers', function (Request $request) {
+    Administrador::truncate();
+    Administrativo::truncate();
+    Apoderado::truncate();
+    Estudiante::truncate();
+    Tutor::truncate();
+    Usuario::truncate();
     $admin = new Usuario([
         'primer_nombre' => 'administrador',
         'segundo_nombre' => 'administrador',
@@ -72,58 +78,62 @@ Route::get('/createUsers', function (Request $request) {
     ]);
     $administrativo->save();
 
-    $user2 = new Usuario([
-        'primer_nombre' => 'apoderado',
-        'segundo_nombre' => 'apoderado',
-        'apellido_paterno' => 'apoderado',
-        'apellido_materno' => 'apoderado',
-        'rut' => 'apoderado',
-        'email' => 'apoderado',
-        'telefono' => 'apoderado',
-        'password' => Hash::make('apoderado'),
-    ]);
-    $user2->save();
-    $apoderado = new Apoderado([
-        'id' => $user2->id,
-        'activo' => 1,
-        'direccion' => 'direccion_apoderado'
-    ]);
-    $apoderado->save();
+    for ($i = 0; $i < 10; $i++) {
+        $user2 = new Usuario([
+            'primer_nombre' => 'apoderado' . $i,
+            'segundo_nombre' => 'apoderado' . $i,
+            'apellido_paterno' => 'apoderado' . $i,
+            'apellido_materno' => 'apoderado' . $i,
+            'rut' => 'apoderado' . $i,
+            'email' => 'apoderado' . $i,
+            'telefono' => 'apoderado' . $i,
+            'password' => Hash::make('apoderado' . $i),
+        ]);
+        $user2->save();
+        $apoderado = new Apoderado([
+            'id' => $user2->id,
+            'activo' => 1,
+            'direccion' => 'direccion_apoderado' . $i
+        ]);
+        $apoderado->save();
+    }
+    for ($i = 0; $i < 5; $i++) {
+        $user3 = new Usuario([
+            'primer_nombre' => 'tutor' . $i,
+            'segundo_nombre' => 'tutor' . $i,
+            'apellido_paterno' => 'tutor' . $i,
+            'apellido_materno' => 'tutor' . $i,
+            'rut' => 'tutor' . $i,
+            'email' => 'tutor' . $i,
+            'telefono' => 'tutor' . $i,
+            'password' => Hash::make('tutor' . $i),
+        ]);
+        $user3->save();
+        $tutor = new Tutor([
+            'id' => $user3->id,
+            'activo' => 1,
+        ]);
+        $tutor->save();
+    }
 
-    $user3 = new Usuario([
-        'primer_nombre' => 'tutor',
-        'segundo_nombre' => 'tutor',
-        'apellido_paterno' => 'tutor',
-        'apellido_materno' => 'tutor',
-        'rut' => 'tutor',
-        'email' => 'tutor',
-        'telefono' => 'tutor',
-        'password' => Hash::make('tutor'),
-    ]);
-    $user3->save();
-    $tutor = new Tutor([
-        'id' => $user3->id,
-        'activo' => 1,
-    ]);
-    $tutor->save();
-
-    $user4 = new Usuario([
-        'primer_nombre' => 'alumno',
-        'segundo_nombre' => 'alumno',
-        'apellido_paterno' => 'alumno',
-        'apellido_materno' => 'alumno',
-        'rut' => 'alumno',
-        'email' => 'alumno',
-        'telefono' => 'alumno',
-        'password' => Hash::make('alumno'),
-    ]);
-    $user4->save();
-    $estudiante = new Estudiante([
-        'id' => $user4->id,
-        'activo' => 1,
-        'direccion' => 'direccion_apoderado'
-    ]);
-    $estudiante->save();
-
+    for ($i = 0; $i < 40; $i++) {
+        $user4 = new Usuario([
+            'primer_nombre' => 'alumno' . $i,
+            'segundo_nombre' => 'alumno' . $i,
+            'apellido_paterno' => 'alumno' . $i,
+            'apellido_materno' => 'alumno' . $i,
+            'rut' => 'alumno' . $i,
+            'email' => 'alumno' . $i,
+            'telefono' => 'alumno' . $i,
+            'password' => Hash::make('alumno' . $i),
+        ]);
+        $user4->save();
+        $estudiante = new Estudiante([
+            'id' => $user4->id,
+            'activo' => 1,
+            'direccion' => 'direccion_alumno' . $i,
+        ]);
+        $estudiante->save();
+    }
     return 'Usuarios creados';
 });
