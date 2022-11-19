@@ -76,7 +76,7 @@ class AuthController extends Controller
             }
 
             return response()->json([
-                'status' => 'success',
+                'status' => 'error',
                 'message' => 'Invalid data'
             ], 200);
         } catch (\Exception $e) {
