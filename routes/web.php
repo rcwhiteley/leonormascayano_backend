@@ -14,13 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
-
-Route::get('/login', function(){
-    $response = [
-        'status' => 'error',
-        'message' => 'User not authenticated'
-    ];
-    return response()->json($response, 401);
-})->name('login');
