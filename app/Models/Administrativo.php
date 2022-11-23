@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Administrativo extends Model
 {
-    // use HasFactory;
     protected $table = 'administrativo';
     public $timestamps = false;
     protected $guarded = [];

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Estudiante extends Model
 {
-    //use HasFactory;
+    // use HasFactory;
     protected $table = 'alumno';
     public $timestamps = false;
     protected $guarded = [];

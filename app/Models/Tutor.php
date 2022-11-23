@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tutor extends Model
 {
-    //use HasFactory;
+    // use HasFactory;
     protected $table = 'tutor';
     public $timestamps = false;
 

@@ -69,21 +69,21 @@ class AuthController extends Controller
                 ]);
                 $estudiante->save();
             }
-            if (isset($body->tutor)){
+            if (isset($body->tutor)) {
                 $tutor = new Tutor([
                     'id' => $user->id,
                     'activo' => true
                 ]);
                 $tutor->save();
             }
-            if(isset($body->administrador)){
+            if (isset($body->administrador)) {
                 $administrador = new Administrador([
                     'id' => $user->id,
                     'activo' => true
                 ]);
                 $administrador->save();
             }
-            if(isset($body->administrativo)){
+            if (isset($body->administrativo)) {
                 $administrativo = new Administrativo([
                     'id' => $user->id,
                     'activo' => true
@@ -119,6 +119,7 @@ class AuthController extends Controller
             'data' => $user
         ], 200);
     }
+
     public function login(Request $request)
     {
         try {

@@ -33,7 +33,7 @@ return [
     |
     */
 
-    'guard' => ['web', 'api'],
+    'guard' => ['web'],
 
     /*
     |--------------------------------------------------------------------------
@@ -62,10 +62,6 @@ return [
     'middleware' => [
         'verify_csrf_token' => App\Http\Middleware\VerifyCsrfToken::class,
         'encrypt_cookies' => App\Http\Middleware\EncryptCookies::class,
-        'add_queued_cookies_to_response' => App\Http\Middleware\AddQueuedCookiesToResponse::class,
-        'start_session' => App\Http\Middleware\StartSession::class,
-        'auth' => App\Http\Middleware\Authenticate::class,
-        'substitute_bindings' => App\Http\Middleware\SubstituteBindings::class,
     ],
 
 ];

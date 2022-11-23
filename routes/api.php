@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Administrador;
 use App\Models\Administrativo;
 use App\Models\Apoderado;

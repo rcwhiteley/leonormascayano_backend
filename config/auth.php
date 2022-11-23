@@ -40,10 +40,6 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'api' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
     ],
 
     /*
@@ -94,8 +90,8 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => 'password_resets',
-            'expire' => 1,
-            'throttle' => 1,
+            'expire' => 60,
+            'throttle' => 60,
         ],
     ],
 
@@ -110,6 +106,6 @@ return [
     |
     */
 
-    'password_timeout' => 60//10800,
+    'password_timeout' => 10800,
 
 ];
