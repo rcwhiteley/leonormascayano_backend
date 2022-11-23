@@ -25,6 +25,6 @@ jobs:
         key: ${{ SECRETS.PRIVATE_KEY }}
         port: 22
         script: |
-          cd /var/html/public/leonormascayano_backend
+          cd /var/www/public/leonormascayano_backend
           git pull
           git status
