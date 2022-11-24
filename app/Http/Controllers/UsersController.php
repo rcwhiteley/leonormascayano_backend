@@ -9,6 +9,18 @@ class UsersController extends Controller
 {
     public function index()
     {
-        return Usuario::with('apoderado', 'estudiante', 'tutor', 'administrativo', 'administrador')->simplePaginate(10);
+        try {
+            $users =  Usuario::with('apoderado', 'estudiante', 'tutor', 'administrativo', 'administrador')->simplePaginate(10);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'request completed successfully',
+                'data' => $users
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }
