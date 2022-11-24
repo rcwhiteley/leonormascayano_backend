@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UsersController;
 use App\Models\Administrador;
 use App\Models\Administrativo;
 use App\Models\Apoderado;
@@ -36,6 +37,10 @@ Route::middleware('auth:sanctum')->get('/logout', [AuthController::class, 'logou
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+
+Route::get('/usuarios', [UsersController::class, 'index']);
+
+
 Route::get('/resetUsers', function (Request $request) {
     Administrador::all()->each(function ($item, $key) {
         $item->delete();
