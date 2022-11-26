@@ -39,7 +39,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/usuarios', [AuthController::class, 'register']);
 
-Route::get('/usuarios', [UsersController::class, 'index']);
+Route::middleware('auth.basic')->get('/usuarios', [UsersController::class, 'index']);
 
 
 Route::get('/resetUsers', function (Request $request) {
