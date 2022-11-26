@@ -122,12 +122,12 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        error_log(json_encode($request));
         try {
             $credentials = $request->validate([
                 'email' => ['required'],
                 'password' => ['required'],
             ]);
-
             if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
 
