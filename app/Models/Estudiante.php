@@ -11,4 +11,12 @@ class Estudiante extends Model
     protected $table = 'alumno';
     public $timestamps = false;
     protected $guarded = [];
+
+    function talleres(){
+        return $this->belongsToMany(Taller::class, TallerHasAlumno::class);
+    }
+
+    function asistenciaTaller(){
+        return $this->hasManyThrough(AsistenciaATaller::class, TallerHasAlumno::class);
+    }
 }

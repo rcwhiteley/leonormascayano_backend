@@ -5,14 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Periodo extends Model
+class AsistenciaATaller extends Model
 {
     // use HasFactory;
-    protected $table = 'periodos';
+    protected $table = 'asistenciaaTaller;';
     public $timestamps = false;
     protected $guarded = [];
-
-    function talleres(){
-        return $this->hasMany(Taller::class, 'periodos_id');
-    }
 }
