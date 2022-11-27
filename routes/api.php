@@ -51,6 +51,8 @@ Route::middleware('auth:sanctum')->post('/talleres', [TalleresController::class,
 Route::get('/talleres/{id}', [TalleresController::class, 'show']);
 Route::post('/talleres/{id}/estudiantes', [TalleresController::class, 'addStudent']);
 
+Route::get('/estudiantes/search', [UsersController::class, 'searchEstudiantes']);
+
 Route::/* middleware('auth:sanctum')-> */get('/periodos', [PeriodosController::class, 'index']);
 Route::/* middleware('auth:sanctum')-> */post('/periodos', [PeriodosController::class, 'create']);
 
