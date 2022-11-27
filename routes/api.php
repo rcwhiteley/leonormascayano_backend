@@ -1,11 +1,15 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PeriodosController;
+use App\Http\Controllers\TalleresController;
 use App\Http\Controllers\UsersController;
 use App\Models\Administrador;
 use App\Models\Administrativo;
 use App\Models\Apoderado;
 use App\Models\Estudiante;
+use App\Models\NivelEspecializacion;
+use App\Models\NivelVinculo;
 use App\Models\Tutor;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
@@ -41,6 +45,13 @@ Route::middleware('auth:sanctum')->post('/usuarios', [AuthController::class, 're
 
 Route::middleware('auth:sanctum')->get('/usuarios', [UsersController::class, 'index']);
 
+
+Route::middleware('auth:sanctum')->get('/talleres', [TalleresController::class, 'show']);
+Route::middleware('auth:sanctum')->post('/talleres', [TalleresController::class, 'create']);
+
+
+Route::/* middleware('auth:sanctum')-> */get('/periodos', [PeriodosController::class, 'index']);
+Route::/* middleware('auth:sanctum')-> */post('/periodos', [PeriodosController::class, 'create']);
 
 Route::get('/resetUsers', function (Request $request) {
     Administrador::all()->each(function ($item, $key) {
@@ -153,4 +164,35 @@ Route::get('/resetUsers', function (Request $request) {
         $estudiante->save();
     }
     return 'Usuarios creados';
+});
+
+Route::get('/generateStaticData', function(Request $request){
+    $ne = new NivelEspecializacion([
+        'nivel_especializacion' => 'Alto',
+    ]);
+    $ne->save();
+    $ne = new NivelEspecializacion([
+        'nivel_especializacion' => 'Medio',
+    ]);
+    $ne->save();
+    $ne = new NivelEspecializacion([
+        'nivel_especializacion' => 'Bajo',
+    ]);
+    $ne->save();
+
+
+    $nv = new NivelVinculo([
+        'nivel_vinculo' => 'Alto',
+    ]);
+    $nv->save();
+    $nv = new NivelVinculo([
+        'nivel_vinculo' => 'Medio',
+    ]);
+    $nv->save();
+    $nv = new NivelVinculo([
+        'nivel_vinculo' => 'Bajo',
+    ]);
+    $nv->save();
+
+    return 'Niveles creados';
 });
