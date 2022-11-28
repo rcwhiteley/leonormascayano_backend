@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PeriodosController;
 use App\Http\Controllers\TalleresController;
+use App\Http\Controllers\TalleresEstudiantesController;
 use App\Http\Controllers\UsersController;
 use App\Models\Administrador;
 use App\Models\Administrativo;
@@ -49,9 +50,11 @@ Route::middleware('auth:sanctum')->get('/usuarios', [UsersController::class, 'in
 Route::/* middleware('auth:sanctum')-> */get('/talleres', [TalleresController::class, 'index']);
 Route::middleware('auth:sanctum')->post('/talleres', [TalleresController::class, 'create']);
 Route::get('/talleres/{id}', [TalleresController::class, 'show']);
-Route::post('/talleres/{id}/estudiantes', [TalleresController::class, 'addStudent']);
+Route::post('/talleres/{id}/estudiantes', [TalleresEstudiantesController::class, 'addStudent']);
+Route::get('/talleres/{id}/estudiantes', [TalleresEstudiantesController::class, 'show']);
 
 Route::get('/estudiantes/search', [UsersController::class, 'searchEstudiantes']);
+
 
 Route::/* middleware('auth:sanctum')-> */get('/periodos', [PeriodosController::class, 'index']);
 Route::/* middleware('auth:sanctum')-> */post('/periodos', [PeriodosController::class, 'create']);

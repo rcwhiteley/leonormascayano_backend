@@ -13,7 +13,11 @@ class Estudiante extends Model
     protected $guarded = [];
 
     function talleres(){
-        return $this->belongsToMany(Taller::class, TallerHasAlumno::class);
+        return $this->belongsToMany(Taller::class, TallerHasAlumno::class, 'alumno_id', 'taller_id');
+    }
+
+    function usuario(){
+        return $this->belongsTo(Usuario::class, 'id');
     }
 
     function asistenciaTaller(){
