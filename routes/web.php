@@ -18,5 +18,9 @@ Route::get('/', function () {
 });
 
 Route::get('/prueba', function () {
-    return view('welcome', ['prueba' => 'prueba']);
+    return view('welcome', ['id' => '15']);
+});
+
+Route::fallback(function () {
+    return view('index');
 });

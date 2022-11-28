@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PeriodosController;
+use App\Http\Controllers\TallerCalificacionesController;
 use App\Http\Controllers\TalleresController;
 use App\Http\Controllers\TalleresEstudiantesController;
 use App\Http\Controllers\UsersController;
@@ -53,7 +54,11 @@ Route::get('/talleres/{id}', [TalleresController::class, 'show']);
 Route::post('/talleres/{id}/estudiantes', [TalleresEstudiantesController::class, 'addStudent']);
 Route::get('/talleres/{id}/estudiantes', [TalleresEstudiantesController::class, 'show']);
 
+Route::post('/talleres/{id}/calificaciones', [TallerCalificacionesController::class, 'add']);
+
+
 Route::get('/estudiantes/search', [UsersController::class, 'searchEstudiantes']);
+
 
 
 Route::/* middleware('auth:sanctum')-> */get('/periodos', [PeriodosController::class, 'index']);

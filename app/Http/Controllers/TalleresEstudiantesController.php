@@ -24,7 +24,6 @@ class TalleresEstudiantesController extends Controller
         $nuevosEstudiantes = $taller->estudiantes->map(function ($estudiante) {
             $usuario = $estudiante->usuario;
             unset($estudiante->usuario);
-            unset($estudiante->pivot);
             $usuario->estudiante = $estudiante;
             return $usuario;
         });
