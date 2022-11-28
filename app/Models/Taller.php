@@ -13,7 +13,7 @@ class Taller extends Model
     public $timestamps = false;
     protected $guarded = [];
     public function estudiantes(){
-        return $this->belongsToMany(Estudiante::class, 'taller_has_alumno', 'taller_id', 'alumno_id');
+        return $this->belongsToMany(Estudiante::class, 'taller_has_alumno', 'taller_id', 'alumno_id')->withPivot(['id']);
     }
 
     public function tutores(){
