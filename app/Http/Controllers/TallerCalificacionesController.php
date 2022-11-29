@@ -6,7 +6,6 @@ use App\Models\Estudiante;
 use App\Models\EvaluacionesTaller;
 use App\Models\EvaluacionesTallerRendidas;
 use App\Models\Taller;
-use App\Models\TallerHasAlumno;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -35,7 +34,6 @@ class TallerCalificacionesController extends Controller
 
     public function add(Request $request)
     {
-        // this should be a transaction
         try {
             $taller = Taller::with('estudiantes')->find($request->id);
             if (!$taller) {
@@ -53,7 +51,6 @@ class TallerCalificacionesController extends Controller
             $evaluacion = $this->createEvaluacion($request->id, $nombre);
             $evaluacionId = $evaluacion->id;
             $calificaciones = $data['calificaciones'];
-            $newData = [];
             foreach ($calificaciones as $estudiante_id => $calificacion) {
                 $estudiante = $this->findEstudiante($estudiantes, $estudiante_id);
                 if ($estudiante == null) {
@@ -68,7 +65,6 @@ class TallerCalificacionesController extends Controller
                 $evaluacion->save();
             }
             DB::commit();
-            // error_log(json_encode($data));
 
             return response()->json([
                 'status' => 'success',
@@ -82,5 +78,23 @@ class TallerCalificacionesController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function getAll(Request $request){
+        $taller = Taller::with(
+            'evaluaciones',
+        )->find($request->id);
+        if (!$taller) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Taller no encontrado',
+                'data' => null
+            ], 404);
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Taller encontrado',
+            'data' => $taller['evaluaciones']
+        ], 200);
     }
 }

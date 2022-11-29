@@ -11,8 +11,4 @@ class TallerHasAlumno extends Pivot
     protected $table = 'taller_has_alumno';
     public $timestamps = false;
     protected $guarded = [];
-
-    public function calificaciones(){
-        return $this->hasMany(EvaluacionesTallerRendidas::class, 'taller_has_alumno_id');
-    }
 }

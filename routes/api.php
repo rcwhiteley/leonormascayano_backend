@@ -54,8 +54,8 @@ Route::get('/talleres/{id}', [TalleresController::class, 'show']);
 Route::post('/talleres/{id}/estudiantes', [TalleresEstudiantesController::class, 'addStudent']);
 Route::get('/talleres/{id}/estudiantes', [TalleresEstudiantesController::class, 'show']);
 
-Route::post('/talleres/{id}/calificaciones', [TallerCalificacionesController::class, 'add']);
-
+Route::post('/talleres/{id}/evaluaciones', [TallerCalificacionesController::class, 'add']);
+Route::get('/talleres/{id}/evaluaciones', [TallerCalificacionesController::class, 'getAll']);
 
 Route::get('/estudiantes/search', [UsersController::class, 'searchEstudiantes']);
 
