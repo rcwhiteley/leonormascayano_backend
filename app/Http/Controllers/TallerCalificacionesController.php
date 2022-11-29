@@ -80,6 +80,7 @@ class TallerCalificacionesController extends Controller
         }
     }
 
+    
     public function getAll(Request $request){
         $taller = Taller::with(
             'evaluaciones',

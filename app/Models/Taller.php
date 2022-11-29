@@ -37,7 +37,7 @@ class Taller extends Model
     }
 
     public function dias_de_clases(){
-        return $this->hasMany(DiasDeClases::class, 'taller_id');
+        return $this->hasMany(DiasDeClases::class, 'taller_idTaller');
     }
 
     public function getNumeroEstudiantesAttribute(){
