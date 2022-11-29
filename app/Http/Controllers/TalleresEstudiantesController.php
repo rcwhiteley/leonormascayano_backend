@@ -19,7 +19,6 @@ class TalleresEstudiantesController extends Controller
                 }
             }
         }
-        error_log($count);
         return $count;
     }
     public function show(Request $request)
