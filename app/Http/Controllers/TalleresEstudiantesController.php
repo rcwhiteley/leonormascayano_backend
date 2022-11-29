@@ -28,6 +28,7 @@ class TalleresEstudiantesController extends Controller
             unset($estudiante->usuario);
             $usuario->estudiante = $estudiante;
             $usuario->estudiante->calificaciones_taller = $estudiante->evaluacionesTallerRendidas;
+            $usuario->estudiante->promedio = round($usuario->estudiante->calificaciones_taller->avg('calificacion'), 0);
             unset($usuario->estudiante->evaluacionesTallerRendidas);
             return $usuario;
         });
