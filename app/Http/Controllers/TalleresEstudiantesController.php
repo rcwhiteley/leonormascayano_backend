@@ -45,7 +45,7 @@ class TalleresEstudiantesController extends Controller
             $usuario->estudiante = $estudiante;
             $usuario->estudiante->calificaciones_taller = $estudiante->evaluacionesTallerRendidas;
             $usuario->estudiante->promedio = round($usuario->estudiante->calificaciones_taller->avg('calificacion'), 0);
-            $usuario->estudiante->porcentaje = round($this->countPresente($usuario->estudiante->asistenciaTaller) * 100 / $dias_count, 1);
+            $usuario->estudiante->porcentaje = round($this->countPresente($usuario->estudiante->asistenciaTaller) * 100 / max($dias_count, 1), 1);
             unset($usuario->estudiante->evaluacionesTallerRendidas);
             return $usuario;
         });
