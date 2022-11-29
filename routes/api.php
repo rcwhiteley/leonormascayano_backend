@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PeriodosController;
+use App\Http\Controllers\TallerAsistenciaController;
 use App\Http\Controllers\TallerCalificacionesController;
 use App\Http\Controllers\TalleresController;
 use App\Http\Controllers\TalleresEstudiantesController;
@@ -59,7 +60,8 @@ Route::get('/talleres/{id}/evaluaciones', [TallerCalificacionesController::class
 
 Route::get('/estudiantes/search', [UsersController::class, 'searchEstudiantes']);
 
-
+Route::get('/talleres/{id}/asistencia', [TallerAsistenciaController::class, 'getAll']);
+Route::post('/talleres/{id}/asistencia', [TallerAsistenciaController::class, 'add']);
 
 Route::/* middleware('auth:sanctum')-> */get('/periodos', [PeriodosController::class, 'index']);
 Route::/* middleware('auth:sanctum')-> */post('/periodos', [PeriodosController::class, 'create']);

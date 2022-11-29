@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class AsistenciaATaller extends Model
 {
     // use HasFactory;
-    protected $table = 'asistenciaaTaller;';
+    protected $table = 'asistenciaTaller';
     public $timestamps = false;
     protected $guarded = [];
 }
