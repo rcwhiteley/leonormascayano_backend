@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\AsignaturasController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ColegiosController;
+use App\Http\Controllers\CursoController;
+use App\Http\Controllers\NivelesController;
 use App\Http\Controllers\PeriodosController;
 use App\Http\Controllers\TallerAsistenciaController;
 use App\Http\Controllers\TallerCalificacionesController;
@@ -10,7 +14,10 @@ use App\Http\Controllers\UsersController;
 use App\Models\Administrador;
 use App\Models\Administrativo;
 use App\Models\Apoderado;
+use App\Models\Asignaturas;
+use App\Models\Colegio;
 use App\Models\Estudiante;
+use App\Models\Niveles;
 use App\Models\NivelEspecializacion;
 use App\Models\NivelVinculo;
 use App\Models\Tutor;
@@ -62,6 +69,13 @@ Route::get('/estudiantes/search', [UsersController::class, 'searchEstudiantes'])
 
 Route::get('/talleres/{id}/asistencia', [TallerAsistenciaController::class, 'getAll']);
 Route::post('/talleres/{id}/asistencia', [TallerAsistenciaController::class, 'add']);
+
+Route::get('/niveles', [NivelesController::class, 'getAll']);
+Route::get('/colegios', [ColegiosController::class, 'getAll']);
+Route::get('/asignaturas', [AsignaturasController::class, 'getAll']);
+
+Route::get('/cursos', [CursoController::class, 'getAll']);
+Route::post('/cursos', [CursoController::class, 'createCurso']);
 
 Route::/* middleware('auth:sanctum')-> */get('/periodos', [PeriodosController::class, 'index']);
 Route::/* middleware('auth:sanctum')-> */post('/periodos', [PeriodosController::class, 'create']);
@@ -179,7 +193,7 @@ Route::get('/resetUsers', function (Request $request) {
     return 'Usuarios creados';
 });
 
-Route::get('/generateStaticData', function(Request $request){
+Route::get('/generateStaticData', function (Request $request) {
     $ne = new NivelEspecializacion([
         'nivel_especializacion' => 'Alto',
     ]);
@@ -208,4 +222,66 @@ Route::get('/generateStaticData', function(Request $request){
     $nv->save();
 
     return 'Niveles creados';
+});
+
+Route::get('/generateStaticDataCursos', function (Request $request) {
+    for ($i = 0; $i < 4; $i++) {
+        $curso = new Colegio([
+            'nombre' => 'Colegio ' . $i,
+            'nombre_director' => 'Descripcion ' . $i,
+            'direccion' => 'Direccion colegio' . $i,
+            'email' => 'email' . $i . '@gmail.com',
+            'celular' => '123456789',
+        ]);
+        $curso->save();
+    }
+    $nivel = new Niveles([
+        'nombre' => '6° Basico',
+    ]);
+    $nivel->save();
+    $nivel = new Niveles([
+        'nombre' => '7° Basico',
+    ]);
+    $nivel->save();
+    $nivel = new Niveles([
+        'nombre' => '8° Basico',
+    ]);
+    $nivel->save();
+    $nivel = new Niveles([
+        'nombre' => '1° Medio',
+    ]);
+    $nivel->save();
+    $nivel = new Niveles([
+        'nombre' => '2° Medio',
+    ]);
+    $nivel->save();
+    $nivel = new Niveles([
+        'nombre' => '3° Medio',
+    ]);
+    $nivel->save();
+    $nivel = new Niveles([
+        'nombre' => '4° Medio',
+    ]);
+    $nivel->save();
+
+    $asignatura = new Asignaturas([
+        'nombre' => 'Matematicas',
+    ]);
+    $asignatura->save();
+
+    $asignatura = new Asignaturas([
+        'nombre' => 'Lenguaje',
+    ]);
+    $asignatura->save();
+
+    $asignatura = new Asignaturas([
+        'nombre' => 'Fisica',
+    ]);
+    $asignatura->save();
+
+    $asignatura = new Asignaturas([
+        'nombre' => 'Biología',
+    ]);
+    $asignatura->save();
+    return 'Cursos creados';
 });
