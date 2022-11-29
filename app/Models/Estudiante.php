@@ -23,4 +23,8 @@ class Estudiante extends Model
     function asistenciaTaller(){
         return $this->hasManyThrough(AsistenciaATaller::class, TallerHasAlumno::class);
     }
+
+    function evaluacionesTallerRendidas(){
+        return $this->hasManyThrough(EvaluacionesTallerRendidas::class, TallerHasAlumno::class, 'alumno_id', 'taller_has_alumno_id');
+    }
 }

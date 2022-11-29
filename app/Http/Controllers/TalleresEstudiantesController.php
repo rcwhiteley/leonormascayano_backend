@@ -13,6 +13,7 @@ class TalleresEstudiantesController extends Controller
         $taller = Taller::with(
             'estudiantes',
             'estudiantes.usuario',
+            'estudiantes.evaluacionesTallerRendidas',
         )->find($request->id);
         if (!$taller) {
             return response()->json([
@@ -21,12 +22,16 @@ class TalleresEstudiantesController extends Controller
                 'data' => null
             ], 404);
         }
+       
         $nuevosEstudiantes = $taller->estudiantes->map(function ($estudiante) {
             $usuario = $estudiante->usuario;
             unset($estudiante->usuario);
             $usuario->estudiante = $estudiante;
+            $usuario->estudiante->calificaciones_taller = $estudiante->evaluacionesTallerRendidas;
+            unset($usuario->estudiante->evaluacionesTallerRendidas);
             return $usuario;
         });
+        error_log(json_encode($nuevosEstudiantes));
         return response()->json([
             'status' => 'success',
             'message' => 'Taller encontrado',
