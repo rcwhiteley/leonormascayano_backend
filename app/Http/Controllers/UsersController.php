@@ -40,7 +40,7 @@ class UsersController extends Controller
                         ->orWhere('apellido_paterno', 'like', '%' . $search . '%')
                         ->orWhere('apellido_materno', 'like', '%' . $search . '%')
                         ->orWhere('rut', 'like', '%' . $search . '%');
-                })->simplePaginate(15);
+                })->simplePaginate(10);
             return response()->json([
                 'status' => 'success',
                 'message' => 'request completed successfully',
