@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Taller;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TalleresEstudiantesController extends Controller
 {
@@ -59,6 +60,13 @@ class TalleresEstudiantesController extends Controller
     {
         try {
             $taller = Taller::find($request->id);
+            if ($taller->estudiantes()->where('alumno_id', $request->estudiante_id)->exists()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'El estudiante ya está inscrito en el taller',
+                    'data' => null
+                ], 400);
+            }
             $taller->estudiantes()->attach($request->estudiante_id);
             error_log($request->estudiante_id);
             error_log($request->id);
@@ -73,5 +81,30 @@ class TalleresEstudiantesController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function notStudents(Request $request)
+    {
+        $search = '';
+        if ($request->has('search')) {
+            $search = $request->search;
+        }
+        error_log($search);
+        $users = Usuario::with('estudiante')
+            ->whereHas('estudiante')
+            ->where(function ($query) use ($search) {
+                $query->where('primer_nombre', 'like', '%' . $search . '%')
+                    ->orWhere('segundo_nombre', 'like', '%' . $search . '%')
+                    ->orWhere('apellido_paterno', 'like', '%' . $search . '%')
+                    ->orWhere('apellido_materno', 'like', '%' . $search . '%')
+                    ->orWhere('rut', 'like', '%' . $search . '%');
+            })->whereDoesntHave('estudiante.talleres', function ($query) use ($request) {
+                $query->where('taller_id', $request->id);
+            })->simplePaginate(10);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Usuarios encontrados',
+            'data' => $users
+        ], 200);
     }
 }
