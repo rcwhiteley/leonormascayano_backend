@@ -80,7 +80,6 @@ class TallerCalificacionesController extends Controller
         }
     }
 
-    
     public function getAll(Request $request){
         $taller = Taller::with(
             'evaluaciones',
@@ -97,5 +96,44 @@ class TallerCalificacionesController extends Controller
             'message' => 'Taller encontrado',
             'data' => $taller['evaluaciones']
         ], 200);
+    }
+
+    public function addEvaluacion(Request $request){
+        try {
+            $taller = Taller::find($request->id);
+            if (!$taller) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Taller no encontrado',
+                    'data' => null
+                ], 404);
+            }
+            error_log(json_encode($request->all()));
+            $validated = $request->validate([
+                'nombre' => 'required|string',
+                'ponderacion' => 'required|integer',
+                'descripcion' => 'required|string',
+                'fecha' => 'required|date'
+            ]);
+
+            $evaluacion = new EvaluacionesTaller([
+                'taller_id' => $request->id,
+                'nombre' => $validated['nombre'],
+                'ponderacion' => $validated['ponderacion'],
+                'descripcion' => $validated['descripcion'],
+                'fecha' => $validated['fecha'],
+            ]);
+            $evaluacion->save();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Evaluacion agregada al taller',
+                'data' => $evaluacion
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }
