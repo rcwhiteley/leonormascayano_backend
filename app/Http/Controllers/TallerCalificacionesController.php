@@ -147,7 +147,7 @@ class TallerCalificacionesController extends Controller
                     'data' => null
                 ], 404);
             }
-            $evaluacion = EvaluacionesTaller::find($request->evaluacion_id);
+            $evaluacion = EvaluacionesTaller::find($request->evaluacionid);
             if (!$evaluacion) {
                 return response()->json([
                     'status' => 'error',
