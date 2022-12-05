@@ -65,6 +65,7 @@ Route::get('/talleres/{id}/noestudiantes', [TalleresEstudiantesController::class
 
 Route::post('/talleres/{id}/evaluaciones', [TallerCalificacionesController::class, 'addEvaluacion']);
 Route::get('/talleres/{id}/evaluaciones', [TallerCalificacionesController::class, 'getAll']);
+Route::put('/talleres/{id}/evaluaciones/{evaluacion_id}', [TallerCalificacionesController::class, 'updateEvaluacion']);
 
 Route::get('/estudiantes/search', [UsersController::class, 'searchEstudiantes']);
 

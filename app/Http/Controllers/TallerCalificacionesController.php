@@ -136,4 +136,47 @@ class TallerCalificacionesController extends Controller
             ], 500);
         }
     }
+
+    public function updateEvaluacion(Request $request){
+        try {
+            $taller = Taller::find($request->id);
+            if (!$taller) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Taller no encontrado',
+                    'data' => null
+                ], 404);
+            }
+            $evaluacion = EvaluacionesTaller::find($request->evaluacion_id);
+            if (!$evaluacion) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Evaluacion no encontrada',
+                    'data' => null
+                ], 404);
+            }
+            $validated = $request->validate([
+                'nombre' => 'required|string',
+                'ponderacion' => 'required|integer',
+                'descripcion' => 'required|string',
+                'fecha' => 'required|date'
+            ]);
+
+            $evaluacion->nombre = $validated['nombre'];
+            $evaluacion->ponderacion = $validated['ponderacion'];
+            $evaluacion->descripcion = $validated['descripcion'];
+            $evaluacion->fecha = $validated['fecha'];
+            $evaluacion->save();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Evaluacion actualizada',
+                'data' => $evaluacion
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
