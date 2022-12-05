@@ -80,7 +80,8 @@ class TallerCalificacionesController extends Controller
         }
     }
 
-    public function getAll(Request $request){
+    public function getAll(Request $request)
+    {
         $taller = Taller::with(
             'evaluaciones',
         )->find($request->id);
@@ -98,7 +99,8 @@ class TallerCalificacionesController extends Controller
         ], 200);
     }
 
-    public function addEvaluacion(Request $request){
+    public function addEvaluacion(Request $request)
+    {
         try {
             $taller = Taller::find($request->id);
             if (!$taller) {
@@ -137,7 +139,8 @@ class TallerCalificacionesController extends Controller
         }
     }
 
-    public function updateEvaluacion(Request $request){
+    public function updateEvaluacion(Request $request)
+    {
         try {
             $taller = Taller::find($request->id);
             if (!$taller) {
@@ -173,6 +176,69 @@ class TallerCalificacionesController extends Controller
                 'data' => $evaluacion
             ], 200);
         } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateCalificaciones(Request $request)
+    {
+        try {
+            $taller = Taller::with('estudiantes')->find($request->id);
+            if (!$taller) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Taller no encontrado',
+                    'data' => null
+                ], 404);
+            }
+            $evaluacion = EvaluacionesTaller::find($request->evaluacionid);
+            if (!$evaluacion) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Evaluacion no encontrada',
+                    'data' => null
+                ], 404);
+            }
+            $validated = $request->validate([
+                'calificaciones' => 'required|array'
+            ]);
+            error_log("aaaaaaaaaaaaaaaaah");
+            DB::beginTransaction();
+            //EvaluacionesTallerRendidas::where('evaluaciones_taller_id', $evaluacion->id)->delete();
+
+            $data = $request->all();
+            $calificaciones = $data['calificaciones'];
+            $estudiantes = $taller->estudiantes;
+            foreach ($calificaciones as $estudiante_id => $calificacion) {
+                $estudiante = $this->findEstudiante($estudiantes, $estudiante_id);
+                if ($estudiante == null) {
+                    continue;
+                }
+                $tallerHasAlumno_id = $estudiante->pivot->id;
+                $evaluacionRendida = EvaluacionesTallerRendidas::where('evaluaciones_taller_id', $evaluacion->id)
+                    ->where('taller_has_alumno_id', $tallerHasAlumno_id)->first();
+                if (!$evaluacionRendida) {
+                    $evaluacionRendida = new EvaluacionesTallerRendidas([
+                        'evaluaciones_taller_id' => $evaluacion->id,
+                        'calificacion' => $calificacion,
+                        'taller_has_alumno_id' => $tallerHasAlumno_id
+                    ]);
+                } else {
+                    $evaluacionRendida->calificacion = $calificacion;
+                }
+                $evaluacionRendida->save();
+            }
+            DB::commit();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Calificaciones actualizadas',
+                'data' => $evaluacion
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()

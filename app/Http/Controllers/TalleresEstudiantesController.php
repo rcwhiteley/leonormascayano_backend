@@ -24,12 +24,14 @@ class TalleresEstudiantesController extends Controller
     }
     public function show(Request $request)
     {
-        $taller = Taller::with(
+        $taller = Taller::with([
             'estudiantes',
             'estudiantes.usuario',
-            'estudiantes.evaluacionesTallerRendidas',
+            'estudiantes.evaluacionesTallerRendidas' => function ($query) use ($request) {
+                $query->where('taller_id', $request->id);
+            },
             'estudiantes.asistenciaTaller',
-            'dias_de_clases'
+            'dias_de_clases']
         )->find($request->id);
         if (!$taller) {
             return response()->json([

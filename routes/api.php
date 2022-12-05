@@ -65,8 +65,10 @@ Route::get('/talleres/{id}/noestudiantes', [TalleresEstudiantesController::class
 
 Route::post('/talleres/{id}/evaluaciones', [TallerCalificacionesController::class, 'addEvaluacion']);
 Route::get('/talleres/{id}/evaluaciones', [TallerCalificacionesController::class, 'getAll']);
+
 Route::put('/talleres/{id}/evaluaciones/{evaluacionid}', [TallerCalificacionesController::class, 'updateEvaluacion']);
 Route::patch('/talleres/{id}/evaluaciones/{evaluacionid}', [TallerCalificacionesController::class, 'updateEvaluacion']);
+Route::put('/talleres/{id}/evaluaciones/{evaluacionid}/calificaciones', [TallerCalificacionesController::class, 'updateCalificaciones']);
 
 Route::get('/estudiantes/search', [UsersController::class, 'searchEstudiantes']);
 
