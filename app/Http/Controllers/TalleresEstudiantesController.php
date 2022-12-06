@@ -9,6 +9,27 @@ use Illuminate\Support\Facades\DB;
 
 class TalleresEstudiantesController extends Controller
 {
+
+    private function calculateAvg($calificaciones, $evaluaciones)
+    {
+        try {
+            $result = 0.0;
+            foreach ($evaluaciones as $evaluacion) {
+                foreach ($calificaciones as $calificacion) {
+                    if ($calificacion->evaluaciones_taller_id == $evaluacion->id) {
+                        $porcentaje = (float)$evaluacion->ponderacion / 100;
+                        $val = (float)$calificacion->calificacion * (float)$evaluacion->ponderacion / 100;
+                        $result += $val;
+                    }
+                }
+            }
+            return round($result, 1);
+            return $result;
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+            return 0;
+        }
+    }
     private function countPresente($asistencias)
     {
         $count = 0;
@@ -24,14 +45,17 @@ class TalleresEstudiantesController extends Controller
     }
     public function show(Request $request)
     {
-        $taller = Taller::with([
-            'estudiantes',
-            'estudiantes.usuario',
-            'estudiantes.evaluacionesTallerRendidas' => function ($query) use ($request) {
-                $query->where('taller_id', $request->id);
-            },
-            'estudiantes.asistenciaTaller',
-            'dias_de_clases']
+        $taller = Taller::with(
+            [
+                'estudiantes',
+                'estudiantes.usuario',
+                'estudiantes.evaluacionesTallerRendidas' => function ($query) use ($request) {
+                    $query->where('taller_id', $request->id);
+                },
+                'estudiantes.asistenciaTaller',
+                'dias_de_clases',
+                'evaluaciones'
+            ]
         )->find($request->id);
         if (!$taller) {
             return response()->json([
@@ -41,12 +65,12 @@ class TalleresEstudiantesController extends Controller
             ], 404);
         }
         $dias_count = $taller->dias_de_clases->count();
-        $nuevosEstudiantes = $taller->estudiantes->map(function ($estudiante) use ($dias_count) {
+        $nuevosEstudiantes = $taller->estudiantes->map(function ($estudiante) use ($dias_count, $taller) {
             $usuario = $estudiante->usuario;
             unset($estudiante->usuario);
             $usuario->estudiante = $estudiante;
             $usuario->estudiante->calificaciones_taller = $estudiante->evaluacionesTallerRendidas;
-            $usuario->estudiante->promedio = round($usuario->estudiante->calificaciones_taller->avg('calificacion'), 0);
+            $usuario->estudiante->promedio = $this->calculateAvg($usuario->estudiante->calificaciones_taller, $taller->evaluaciones);
             $usuario->estudiante->porcentaje = round($this->countPresente($usuario->estudiante->asistenciaTaller) * 100 / max($dias_count, 1), 1);
             unset($usuario->estudiante->evaluacionesTallerRendidas);
             return $usuario;
