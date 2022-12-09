@@ -11,4 +11,9 @@ class Colegio extends Model
     protected $table = 'colegio';
     public $timestamps = false;
     protected $guarded = [];
+
+    public function cursos()
+    {
+        return $this->hasMany(Curso::class);
+    }
 }

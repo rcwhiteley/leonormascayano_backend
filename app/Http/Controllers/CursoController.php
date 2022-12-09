@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Colegio;
 use App\Models\Curso;
+use App\Models\Periodo;
 use Illuminate\Http\Request;
 
 class CursoController extends Controller
@@ -36,17 +38,40 @@ class CursoController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Error al crear curso',
-                'data' => $e
-            ], 500);
+                'data' => $e->getMessage()
+            ], 200);
         }
     }
 
     public function getAll(){
-        $cursos = Curso::all();
+        $colegios = Colegio::all();
+        $cursos = Curso::with('nivel')->get();
+        $periodos = Periodo::all();
+        foreach ($periodos as $periodo) {
+            $periodo->colegios = collect([]);
+        }
+        foreach($colegios as $colegio){
+            $colegio->cursos = collect([]);
+            foreach($periodos as $periodo){
+               $periodo->colegios->push($colegio);
+            }
+        }
+
+        foreach($cursos as $curso){
+            $periodo = $periodos->where('id', $curso->periodos_id)->first();
+            $colegio = $periodo->colegios->where('id', $curso->colegio_id)->first();
+            $colegio->cursos->push($curso);
+        }
+
+        foreach($periodos as $periodo){
+            $periodo->colegios = $periodo->colegios->where(function($colegio){
+                return $colegio->cursos->count() > 0;
+            })->values();
+        }
         return response()->json([
             'status' => 'success',
             'message' => 'Cursos obtenidos exitosamente',
-            'data' => $cursos
+            'data' => $periodos
         ], 200);
     }
 }

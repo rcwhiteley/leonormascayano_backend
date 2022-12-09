@@ -11,4 +11,14 @@ class Curso extends Model
     protected $table = 'curso';
     public $timestamps = false;
     protected $guarded = [];
+
+    public function colegio()
+    {
+        return $this->belongsTo(Colegio::class);
+    }
+
+    public function nivel()
+    {
+        return $this->belongsTo(Niveles::class, 'niveles_id');
+    }
 }
