@@ -27,4 +27,16 @@ class Estudiante extends Model
     function evaluacionesTallerRendidas(){
         return $this->hasManyThrough(EvaluacionesTallerRendidas::class, TallerHasAlumno::class, 'alumno_id', 'taller_has_alumno_id');
     }
+
+    function cursos(){
+        return $this->belongsToMany(Curso::class, CursoHasAlumno::class, 'alumno_id', 'curso_id')->withPivot(['id']);
+    }
+
+    function asistenciaClases(){
+        return $this->hasManyThrough(AsistenciaClases::class, CursoHasAlumno::class, 'alumno_id', 'curso_has_alumno_id');
+    }
+
+    function evaluacionesRendidas(){
+        return $this->hasManyThrough(EvaluacionesRendidas::class, CursoHasAlumno::class, 'alumno_id', 'curso_has_alumno_id');
+    }
 }
