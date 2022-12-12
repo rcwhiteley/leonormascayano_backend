@@ -21,4 +21,14 @@ class Curso extends Model
     {
         return $this->belongsTo(Niveles::class, 'niveles_id');
     }
+
+    public function estudiantes()
+    {
+        return $this->belongsToMany(Estudiante::class, CursoHasAlumno::class, 'curso_id', 'alumno_id')->withPivot(['id']);
+    }
+
+    public function fechaRegistroAsistencia()
+    {
+        return $this->hasMany(FechaRegistroAsistencia::class, 'curso_id');
+    }
 }

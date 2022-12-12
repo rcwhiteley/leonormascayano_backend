@@ -43,28 +43,33 @@ class CursoController extends Controller
         }
     }
 
-    public function getAll(){
+    public function getAll()
+    {
         $colegios = Colegio::all();
         $cursos = Curso::with('nivel')->get();
         $periodos = Periodo::all();
         foreach ($periodos as $periodo) {
+            // unset($periodo->colegios);
             $periodo->colegios = collect([]);
         }
-        foreach($colegios as $colegio){
-            $colegio->cursos = collect([]);
-            foreach($periodos as $periodo){
-               $periodo->colegios->push($colegio);
+
+        foreach ($colegios as $colegio) {
+            // unset($colegio->cursos);
+            foreach ($periodos as $periodo) {
+                $colegio->cursos = collect([]);
+                $newColegio = clone $colegio;
+                $periodo->colegios->push($newColegio);
             }
         }
 
-        foreach($cursos as $curso){
+        foreach ($cursos as $curso) {
             $periodo = $periodos->where('id', $curso->periodos_id)->first();
             $colegio = $periodo->colegios->where('id', $curso->colegio_id)->first();
-            $colegio->cursos->push($curso);
+            $colegio->cursos->push(clone $curso);
+            // error_log($colegio->toJson());
         }
-
-        foreach($periodos as $periodo){
-            $periodo->colegios = $periodo->colegios->where(function($colegio){
+        foreach ($periodos as $periodo) {
+            $periodo->colegios = $periodo->colegios->where(function ($colegio) {
                 return $colegio->cursos->count() > 0;
             })->values();
         }
