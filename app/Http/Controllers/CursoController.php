@@ -79,4 +79,23 @@ class CursoController extends Controller
             'data' => $periodos
         ], 200);
     }
+
+    public function getCurso(Request $request)
+    {
+        $id = $request->id;
+        $curso = Curso::with('asignaturas_curso', 'asignaturas_curso.asignatura', 'nivel', 'colegio')->find($id);
+        if ($curso) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Curso obtenido exitosamente',
+                'data' => $curso
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Curso no encontrado',
+                'data' => null
+            ], 200);
+        }
+    }
 }

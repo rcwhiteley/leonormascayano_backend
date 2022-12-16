@@ -11,4 +11,8 @@ class Asignaturas extends Model
     protected $table = 'asignaturas';
     public $timestamps = false;
     protected $guarded = [];
+
+    public function evaluaciones(){
+        return $this->hasMany(Evaluaciones::class, 'asignaturas_id');
+    }
 }

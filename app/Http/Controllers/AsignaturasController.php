@@ -15,4 +15,13 @@ class AsignaturasController extends Controller
             'data' => $asignaturas
         ], 200);
     }
+
+    public function getEvaluaciones(Request $request){
+        $asignaturas = Asignaturas::with('evaluaciones')->find($request->asignatura_id);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Asignaturas obtenidas exitosamente',
+            'data' => $asignaturas
+        ], 200);
+    }
 }

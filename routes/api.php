@@ -3,9 +3,11 @@
 use App\Http\Controllers\AsignaturasController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ColegiosController;
+use App\Http\Controllers\CursoAsignaturasController;
 use App\Http\Controllers\CursoAsistenciaController;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\CursoEstudiantesController;
+use App\Http\Controllers\CursoEvaluacionesController;
 use App\Http\Controllers\NivelesController;
 use App\Http\Controllers\PeriodosController;
 use App\Http\Controllers\TallerAsistenciaController;
@@ -19,6 +21,7 @@ use App\Models\Apoderado;
 use App\Models\Asignaturas;
 use App\Models\Colegio;
 use App\Models\Estudiante;
+use App\Models\Evaluaciones;
 use App\Models\Niveles;
 use App\Models\NivelEspecializacion;
 use App\Models\NivelVinculo;
@@ -87,12 +90,16 @@ Route::get('/asignaturas', [AsignaturasController::class, 'getAll']);
 
 Route::get('/cursos', [CursoController::class, 'getAll']);
 Route::post('/cursos', [CursoController::class, 'createCurso']);
+Route::get('/cursos/{id}', [CursoController::class, 'getCurso']);
 Route::get('/cursos/{id}/noestudiantes', [CursoEstudiantesController::class, 'notStudents']);
 Route::post('/cursos/{id}/estudiantes', [CursoEstudiantesController::class, 'addStudent']);
 Route::get('/cursos/{id}/estudiantes', [CursoEstudiantesController::class, 'show']);
 Route::get('/cursos/{id}/asistencia', [CursoAsistenciaController::class, 'getAll']);
 Route::post('/cursos/{id}/asistencia', [CursoAsistenciaController::class, 'add']);
-
+Route::post('/cursos/{id}/asignaturas', [CursoAsignaturasController::class, 'addAsignatura']);
+Route::post('/cursos/{id}/evaluaciones', [CursoEvaluacionesController::class, 'addEvaluacion']);
+Route::get('/cursos/{id}/asignaturas/{asignatura_id}/evaluaciones', [CursoEvaluacionesController::class, 'getAll']);
+Route::post('/cursos/{id}/asignaturas/{asignatura_id}/evaluaciones/{evaluacion_id}/calificaciones', [CursoEvaluacionesController::class, 'setCalificaciones']);
 Route::/* middleware('auth:sanctum')-> */get('/periodos', [PeriodosController::class, 'index']);
 Route::/* middleware('auth:sanctum')-> */post('/periodos', [PeriodosController::class, 'create']);
 
@@ -304,15 +311,15 @@ Route::get('/generateStaticDataCursos', function (Request $request) {
 
 Route::get('/generatePeriodos', function (Request $request) {
     $periodo = new Periodo([
-        'nombre' => 'Periodo 1',
-        'fecha_inicio' => '2019-01-01',
-        'fecha_termino' => '2019-06-30',
+        'nombre' => '2022-2',
+        'fecha_inicio' => '2022-07-01',
+        'fecha_termino' => '2022-12-1',
     ]);
     $periodo->save();
     $periodo = new Periodo([
-        'nombre' => 'Periodo 2',
-        'fecha_inicio' => '2019-07-01',
-        'fecha_termino' => '2019-12-31',
+        'nombre' => '2023-1',
+        'fecha_inicio' => '2022-12-02',
+        'fecha_termino' => '2023-07-01',
     ]);
     $periodo->save();
     return 'Periodos creados';

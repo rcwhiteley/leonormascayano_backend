@@ -31,4 +31,17 @@ class Curso extends Model
     {
         return $this->hasMany(FechaRegistroAsistencia::class, 'curso_id');
     }
+
+    public function asignaturas()
+    {
+        return $this->hasMany(Asignaturas::class, CursoHasAsignatura::class, 'curso_id', 'asignatura_id')->withPivot(['id']);
+    }
+
+    public function asignaturas_curso(){
+        return $this->hasMany(AsignaturaCurso::class, 'curso_id');
+    }
+
+    public function curso_has_alumnos(){
+        return $this->hasMany(CursoHasAlumno::class, 'curso_id');
+    }
 }
