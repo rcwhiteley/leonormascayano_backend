@@ -15,5 +15,4 @@ class EvaluacionesRendidas extends Model
     public function curso_has_alumnos(){
         return $this->belongsTo(CursoHasAlumno::class, 'curso_has_alumno_id');
     }
-
 }

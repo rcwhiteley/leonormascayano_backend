@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlertaTempranaController;
 use App\Http\Controllers\AsignaturasController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ColegiosController;
@@ -102,7 +103,8 @@ Route::get('/cursos/{id}/asignaturas/{asignatura_id}/evaluaciones', [CursoEvalua
 Route::post('/cursos/{id}/asignaturas/{asignatura_id}/evaluaciones/{evaluacion_id}/calificaciones', [CursoEvaluacionesController::class, 'setCalificaciones']);
 Route::/* middleware('auth:sanctum')-> */get('/periodos', [PeriodosController::class, 'index']);
 Route::/* middleware('auth:sanctum')-> */post('/periodos', [PeriodosController::class, 'create']);
-
+Route::get('/alertatemprana', [AlertaTempranaController::class, 'getAll']);
+Route::get('/alertatemprana/{estudiante_id}', [AlertaTempranaController::class, 'getDetailsStudent']);
 Route::get('/resetUsers', function (Request $request) {
     Administrador::all()->each(function ($item, $key) {
         $item->delete();
