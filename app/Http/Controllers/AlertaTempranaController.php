@@ -63,7 +63,7 @@ class AlertaTempranaController extends Controller
                 $cantidadUltimosPromedios++;
             }
             $estudiante->promedio = round($promedio / $cantidadPromedios);
-            if ($cantidadPromedios > 0)
+            if ($cantidadUltimosPromedios > 0)
                 $estudiante->ultimo_promedio = $ultimoPromedio / $cantidadUltimosPromedios;
             else
                 $estudiante->ultimo_promedio = $estudiante->promedio;
