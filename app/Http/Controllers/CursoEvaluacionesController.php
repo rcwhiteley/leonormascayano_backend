@@ -24,13 +24,12 @@ class CursoEvaluacionesController extends Controller
 
     public function getAll(Request $request)
     {
-        $cursoId = $request->id;
         $asignaturaId = $request->asignatura_id;
         $evaluaciones = AsignaturaCurso::with(
             'evaluaciones',
             'evaluaciones.evaluaciones_rendidas',
             'evaluaciones.evaluaciones_rendidas.curso_has_alumnos',
-        )->where('curso_id', $cursoId)->where('asignaturas_id', $asignaturaId)->get();
+        )->where('id', $asignaturaId)->get();
         return response()->json([
             'status' => 'success',
             'message' => 'Evaluaciones obtenidas exitosamente',

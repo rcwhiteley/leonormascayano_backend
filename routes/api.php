@@ -85,6 +85,7 @@ Route::post('/talleres/{id}/asistencia', [TallerAsistenciaController::class, 'ad
 Route::get('/niveles', [NivelesController::class, 'getAll']);
 Route::get('/colegios', [ColegiosController::class, 'getAll']);
 Route::post('/colegios', [ColegiosController::class, 'createColegio']);
+Route::get('/colegios/{id}', [ColegiosController::class, 'getDetailsColegio']);
 Route::get('/colegios/{id}/cursos', [ColegiosController::class, 'getCursosColegio']);
 
 Route::get('/asignaturas', [AsignaturasController::class, 'getAll']);
@@ -105,6 +106,9 @@ Route::/* middleware('auth:sanctum')-> */get('/periodos', [PeriodosController::c
 Route::/* middleware('auth:sanctum')-> */post('/periodos', [PeriodosController::class, 'create']);
 Route::get('/alertatemprana', [AlertaTempranaController::class, 'getAll']);
 Route::get('/alertatemprana/{estudiante_id}', [AlertaTempranaController::class, 'getDetailsStudent']);
+
+
+
 Route::get('/resetUsers', function (Request $request) {
     Administrador::all()->each(function ($item, $key) {
         $item->delete();

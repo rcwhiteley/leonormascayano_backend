@@ -84,4 +84,22 @@ class ColegiosController extends Controller
             ], 500);
         }
     }
+
+    public function getDetailsColegio(Request $request){
+        try {
+            $colegio_id = $request->id;
+            $colegio = Colegio::where('id', $colegio_id)->first();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Colegio obtenido exitosamente',
+                'data' => $colegio
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error al obtener colegio',
+                'data' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
