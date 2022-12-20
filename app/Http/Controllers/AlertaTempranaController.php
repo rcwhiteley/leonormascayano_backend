@@ -62,10 +62,9 @@ class AlertaTempranaController extends Controller
                 $ultimoPromedio += $promedios->ultimo_promedio;
                 $cantidadUltimosPromedios++;
             }
-            if($cantidadPromedios > 0){
+            if ($cantidadPromedios > 0) {
                 $estudiante->promedio = round($promedio / $cantidadPromedios);
-            }
-            else{
+            } else {
                 $estudiante->promedio = 0;
             }
             if ($cantidadUltimosPromedios > 0)
@@ -77,7 +76,7 @@ class AlertaTempranaController extends Controller
 
     public function calculatePromedios($curso)
     {
-        error_log(json_encode($curso));
+        // error_log(json_encode($curso));
         foreach ($curso->estudiantes as $estudiante) {
             $estudiante->ultimo_promedio = 0;
             $estudiante->promedio = 0;
@@ -92,7 +91,7 @@ class AlertaTempranaController extends Controller
         $ultimaAsistencia = 0;
         // error_log(json_encode(array_keys($curso->fechaRegistroAsistencia)));
         foreach ($curso->fechaRegistroAsistencia as $fechaRegistroAsistencia) {
-            error_log(json_encode($fechaRegistroAsistencia));
+            // error_log(json_encode($fechaRegistroAsistencia));
             $asistencias = $fechaRegistroAsistencia->asistencia_clases->where('curso_has_alumno_id', $estudiante->pivot->id);
 
             foreach ($asistencias as $asistencia) {
@@ -159,7 +158,7 @@ class AlertaTempranaController extends Controller
 
     public function getDetailsStudent(Request $request)
     {
-        error_log($request->estudiante_id);
+        // error_log($request->estudiante_id);
         $detalles = Periodo::with(
             [
                 'cursos',
@@ -176,13 +175,13 @@ class AlertaTempranaController extends Controller
                 'cursos.fechaRegistroAsistencia.asistencia_clases'
             ]
         )->whereHas('cursos')->get();
-        error_log(json_encode($detalles[0]->cursos[0]));
+        // error_log(json_encode($detalles[0]->cursos[0]));
         $detalles[0]->curso = $detalles[0]->cursos->where(function ($curso) {
             return $curso->estudiantes->count() > 0;
         })->first();
         $detalles[0]->estudiante = $detalles[0]->curso->estudiantes[0];
         foreach ($detalles[0]->curso->asignaturas_curso as $asignatura) {
-            error_log(json_encode($detalles[0]->estudiante->pivot->id));
+            // error_log(json_encode($detalles[0]->estudiante->pivot->id));
             foreach ($asignatura->evaluaciones as $evaluacion) {
                 $evaluacion->evaluacion_rendida = $evaluacion->evaluaciones_rendidas->where('curso_has_alumno_id', $detalles[0]->estudiante->pivot->id)->first();
                 unset($evaluacion->evaluaciones_rendidas);
@@ -190,10 +189,12 @@ class AlertaTempranaController extends Controller
         }
         $asistencias = [];
         foreach ($detalles[0]->curso->fechaRegistroAsistencia as $fechaRegistroAsistencia) {
-            error_log(json_encode($fechaRegistroAsistencia));
+            // error_log(json_encode($fechaRegistroAsistencia));
             $asistencia = $fechaRegistroAsistencia->asistencia_clases->where('curso_has_alumno_id', $detalles[0]->estudiante->pivot->id)->first();
-            $asistencia->fecha = $fechaRegistroAsistencia->fecha;
-            array_push($asistencias, $asistencia);
+            if ($asistencia) {
+                $asistencia->fecha = $fechaRegistroAsistencia->fecha;
+                array_push($asistencias, $asistencia);
+            }
         }
         unset($detalles[0]->curso->fechaRegistroAsistencia);
 

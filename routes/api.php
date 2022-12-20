@@ -85,6 +85,7 @@ Route::post('/talleres/{id}/asistencia', [TallerAsistenciaController::class, 'ad
 Route::get('/niveles', [NivelesController::class, 'getAll']);
 Route::get('/colegios', [ColegiosController::class, 'getAll']);
 Route::post('/colegios', [ColegiosController::class, 'createColegio']);
+Route::put('/colegios/{id}', [ColegiosController::class, 'updateColegio']);
 Route::get('/colegios/{id}', [ColegiosController::class, 'getDetailsColegio']);
 Route::get('/colegios/{id}/cursos', [ColegiosController::class, 'getCursosColegio']);
 

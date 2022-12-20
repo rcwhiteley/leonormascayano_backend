@@ -49,6 +49,46 @@ class ColegiosController extends Controller
         }
     }
 
+    public function updateColegio(Request $request)
+    {
+        error_log(json_encode($request->all()));
+        try {
+            $request->validate([
+                'nombre' => 'required',
+                'direccion' => 'required',
+                'telefono' => 'required',
+                'email' => 'required',
+                'director' => 'required'
+            ]);
+            $colegio = Colegio::find($request->id);
+            if ($colegio) {
+                $colegio->nombre = $request->nombre;
+                $colegio->direccion = $request->direccion;
+                $colegio->celular = $request->telefono;
+                $colegio->email = $request->email;
+                $colegio->nombre_director = $request->director;
+                $colegio->save();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Colegio actualizado exitosamente',
+                    'data' => $colegio
+                ], 200);
+            }
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se encontró el colegio',
+                'data' => null
+            ], 404);
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error al actualizar el colegio',
+                'data' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function getCursosColegio(Request $request)
     {
         try {
@@ -85,7 +125,8 @@ class ColegiosController extends Controller
         }
     }
 
-    public function getDetailsColegio(Request $request){
+    public function getDetailsColegio(Request $request)
+    {
         try {
             $colegio_id = $request->id;
             $colegio = Colegio::where('id', $colegio_id)->first();
