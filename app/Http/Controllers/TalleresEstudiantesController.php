@@ -117,7 +117,9 @@ class TalleresEstudiantesController extends Controller
         }
         error_log($search);
         $users = Usuario::with('estudiante')
-            ->whereHas('estudiante')
+            ->whereHas('estudiante', function ($query) {
+                $query->where('activo', 1);
+            })
             ->where(function ($query) use ($search) {
                 $query->where('primer_nombre', 'like', '%' . $search . '%')
                     ->orWhere('segundo_nombre', 'like', '%' . $search . '%')

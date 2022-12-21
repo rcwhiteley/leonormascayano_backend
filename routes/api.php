@@ -61,6 +61,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/usuarios', [AuthController::class, 'register']);
 
 Route::middleware('auth:sanctum')->get('/usuarios', [UsersController::class, 'index']);
+Route::get('/usuarios/{id}', [UsersController::class, 'show']);
+Route::put('/usuarios/{id}', [UsersController::class, 'update']);
 
 
 Route::/* middleware('auth:sanctum')-> */get('/talleres', [TalleresController::class, 'index']);
