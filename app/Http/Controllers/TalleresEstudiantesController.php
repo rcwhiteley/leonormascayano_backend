@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AsistenciaATaller;
+use App\Models\EvaluacionesTallerRendidas;
 use App\Models\Taller;
+use App\Models\TallerHasAlumno;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -134,5 +137,27 @@ class TalleresEstudiantesController extends Controller
             'message' => 'Usuarios encontrados',
             'data' => $users
         ], 200);
+    }
+
+    public function deleteStudent(Request $request)
+    {
+        try {
+            $tallerHasAlumno = TallerHasAlumno::where('taller_id', $request->id)->where('alumno_id', $request->estudiante_id)->first();
+            if($tallerHasAlumno){
+                AsistenciaATaller::where('taller_has_alumno_id', $tallerHasAlumno->id)->delete();
+                EvaluacionesTallerRendidas::where('taller_has_alumno_id', $tallerHasAlumno->id)->delete();
+                $tallerHasAlumno->delete();
+            }
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Estudiante eliminado del taller',
+                'data' => null
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }
