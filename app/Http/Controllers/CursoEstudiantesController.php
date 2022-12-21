@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AsistenciaClases;
 use App\Models\Curso;
+use App\Models\CursoHasAlumno;
+use App\Models\EvaluacionesRendidas;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 
@@ -92,5 +95,30 @@ class CursoEstudiantesController extends Controller
             'message' => 'Taller encontrado',
             'data' => $nuevosEstudiantes
         ], 200);
+    }
+
+    public function deleteStudent(Request $request){
+        try {
+            $curso = Curso::find($request->id);
+            if($curso == null) {
+               error_log('Curso no encontrado '.$request->id );
+            }
+            $cursoHasEstudiante = CursoHasAlumno::where('curso_id', $request->id)->where('alumno_id', $request->estudiante_id)->first();
+            if ($cursoHasEstudiante){
+                AsistenciaClases::where('curso_has_alumno_id', $cursoHasEstudiante->id)->delete();
+                EvaluacionesRendidas::where('curso_has_alumno_id', $cursoHasEstudiante->id)->delete();
+                $cursoHasEstudiante->delete();
+            }
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Estudiante eliminado del curso',
+                'data' => $curso
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }

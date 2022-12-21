@@ -105,6 +105,7 @@ Route::post('/cursos/{id}/asignaturas', [CursoAsignaturasController::class, 'add
 Route::post('/cursos/{id}/evaluaciones', [CursoEvaluacionesController::class, 'addEvaluacion']);
 Route::get('/cursos/{id}/asignaturas/{asignatura_id}/evaluaciones', [CursoEvaluacionesController::class, 'getAll']);
 Route::post('/cursos/{id}/asignaturas/{asignatura_id}/evaluaciones/{evaluacion_id}/calificaciones', [CursoEvaluacionesController::class, 'setCalificaciones']);
+Route::delete('/cursos/{id}/estudiantes/{estudiante_id}', [CursoEstudiantesController::class, 'deleteStudent']);
 Route::/* middleware('auth:sanctum')-> */get('/periodos', [PeriodosController::class, 'index']);
 Route::/* middleware('auth:sanctum')-> */post('/periodos', [PeriodosController::class, 'create']);
 Route::get('/alertatemprana', [AlertaTempranaController::class, 'getAll']);
